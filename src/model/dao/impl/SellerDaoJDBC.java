@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,41 @@ public class SellerDaoJDBC implements SellerDao{
 
 	@Override
 	public void insert(Seller obj) {
-		// TODO Auto-generated method stub
+		
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			stmt = conn.prepareStatement("INSERT INTO seller "
+					+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+					+ "VALUES (?, ?, ?, ?, ?) ", 
+					Statement.RETURN_GENERATED_KEYS);
+			
+			stmt.setString(1, obj.getName());
+			stmt.setString(2, obj.getEmail());
+			stmt.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+			stmt.setDouble(4, obj.getBaseSalary());
+			stmt.setInt(5, obj.getDepartment().getId());
+			
+			int rowsAffect = stmt.executeUpdate();
+			if(rowsAffect > 0) {
+				rs = stmt.getGeneratedKeys();
+				if(rs.next()) {
+					int id = rs.getInt(1);
+					obj.setId(id);
+				}
+			}else {
+				throw new DbException("Ocorreram erros ao inserir os dados.");
+			}
+			
+		} catch (Exception e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(stmt);
+			DB.closeResultSet(rs);
+		}
 		
 	}
 

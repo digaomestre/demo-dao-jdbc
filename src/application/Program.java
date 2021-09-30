@@ -31,9 +31,16 @@ public class Program {
 		}
 		System.out.println("================================");
 		
-		Seller newSeller = new Seller(null, "Greg", "greg@gmail.com", new Date(), 5000.0, dep);
-		sellerDao.insert(newSeller);
-		System.out.println("Inserted! new id = " + newSeller.getId());
+		//Seller newSeller = new Seller(null, "Greg", "greg@gmail.com", new Date(), 5000.0, dep);
+		//sellerDao.insert(newSeller);
+		//System.out.println("Inserted! new id = " + newSeller.getId());
+		
+		seller = sellerDao.findById(1);
+		seller.setName("Martha Wine");
+		seller.setEmail("martha@gmail.com");
+		sellerDao.update(seller);
+		System.out.println("Updated sucess!!!");
+		System.out.println(seller);
 	}
 
 }

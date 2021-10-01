@@ -3,6 +3,7 @@ package application;
 import java.util.Date;
 import java.util.List;
 
+import db.DB;
 import model.dao.DaoFactory;
 import model.dao.SellerDao;
 import model.entities.Department;
@@ -41,6 +42,11 @@ public class Program {
 		sellerDao.update(seller);
 		System.out.println("Updated sucess!!!");
 		System.out.println(seller);
+		System.out.println("======================================");
+		sellerDao.deleteById(1);
+		System.out.println("Delete sucess!");
+		
+		DB.closeConnection();
 	}
 
 }
